@@ -25,7 +25,7 @@ import { dispatchMessage } from './message-handlers.js';
 import { detectExecutionContext, formatErrorOutput, formatCompletionMessage } from './output-formatters.js';
 import { createProgressManager } from './progress-manager.js';
 import { createAuditLogger } from './audit-logger.js';
-import { getActualModelName } from './router-utils.js';
+import { getActualModelName, isGlmMode, getGlmModelName } from './router-utils.js';
 
 declare global {
   var SHANNON_DISABLE_LOADER: boolean | undefined;
@@ -219,7 +219,7 @@ export async function runClaudePrompt(
 
   const mcpServers = buildMcpServers(sourceDir, agentName);
   const options = {
-    model: 'claude-sonnet-4-5-20250929',
+    model: isGlmMode() ? getGlmModelName() : 'claude-sonnet-4-5-20250929',
     maxTurns: 10_000,
     cwd: sourceDir,
     permissionMode: 'bypassPermissions' as const,
